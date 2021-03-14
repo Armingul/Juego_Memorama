@@ -16,7 +16,7 @@ MemoryGame = function(gs){
 
     this.cartas = [];
     this.finJuego = true;
-    this.mensaje = "Comenzamos";
+    this.mensaje = "Bienvenido a Memory";
     this.graphics = gs;
 
     this.parejaCartasAcertadas = 0;
@@ -24,40 +24,6 @@ MemoryGame = function(gs){
     this.timer;
     this.espera = false;
     
-
-
-    /**
-     * Compruebo si el juego ha acabado
-     */
-
-     this.__checkEnd = function() {
-        return this.parejaCartasAcertadas * 2 === this.cartas.length;
-    }
-
-    /**
-     * Desordena las cartas (funcion de internet)
-     */
-
-     this.__desordenarCartas = function(array) {
-        var currentIndex = array.length,
-            temporaryValue, randomIndex;
-
-        // While there remain elements to shuffle...
-        while (0 !== currentIndex) {
-
-            // Pick a remaining element...
-            randomIndex = Math.floor(Math.random() * currentIndex);
-            currentIndex -= 1;
-
-            // And swap it with the current element.
-            temporaryValue = array[currentIndex];
-            array[currentIndex] = array[randomIndex];
-            array[randomIndex] = temporaryValue;
-        }
-
-        return array;
-    };
-
     /**
      *  initGame(): Inicializa el juego creando las cartas (recuerda que son 2 de cada
         tipo de carta), desordenándolas y comenzando el bucle de juego.
@@ -81,8 +47,7 @@ MemoryGame = function(gs){
                     duplico = false;
                 }
             }
-            this.__desordenarCartas(this.cartas);
-    
+            this.barajearCartas(this.cartas);
             this.loop();
     
         };
@@ -159,6 +124,39 @@ MemoryGame = function(gs){
              }
      
          };
+
+         //FUNCIONES AUXILIARES
+          /**
+     * Compruebo si el juego ha acabado
+     */
+
+     this.__checkEnd = function() {
+        return this.parejaCartasAcertadas * 2 === this.cartas.length;
+    }
+
+    /**
+     * Desordena las cartas (funcion de internet)
+     */
+
+     this.barajearCartas = function(array) {
+        var currentIndex = array.length,
+            temporaryValue, randomIndex;
+
+        // While there remain elements to shuffle...
+        while (0 !== currentIndex) {
+
+            // Pick a remaining element...
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex -= 1;
+
+            // And swap it with the current element.
+            temporaryValue = array[currentIndex];
+            array[currentIndex] = array[randomIndex];
+            array[randomIndex] = temporaryValue;
+        }
+
+        return array;
+    };
      };
 
 
