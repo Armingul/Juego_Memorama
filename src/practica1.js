@@ -1,4 +1,9 @@
 
+var EnumEstadoCartas = {
+    "bocaArriba": 1,
+    "bocaAbajo": 2,
+    "encontrado": 3
+};
 
 /**
  * La constructora recibe como parámetro el servidor gráfico,
@@ -6,23 +11,20 @@ usado posteriormente para dibujar.
  */
 var MemoryGame = MemoryGame || {};
 
-var EnumEstadoCartas = {
-    "bocaArriba": 1,
-    "bocaAbajo": 2,
-    "encontrado": 3
-};
+
 
 MemoryGame = function(gs){
-
-    this.cartas = [];
-    this.finJuego = true;
-    this.mensaje = "Bienvenido a Memory";
-    this.graphics = gs;
 
     this.parejaCartasAcertadas = 0;
     this.primeraCarta = -1;
     this.timer;
     this.espera = false;
+    this.cartas = [];
+    this.finJuego = true;
+    this.mensaje = "Juego Memoria Spectrum";
+    this.graphics = gs;
+
+   
     
     /**
      *  initGame(): Inicializa el juego creando las cartas (recuerda que son 2 de cada
@@ -59,12 +61,12 @@ MemoryGame = function(gs){
 
        this.draw = function() {
         this.graphics.drawMessage(this.mensaje);
-
+        //Dibujo el tablero
         for (var i = 0; i < 16; i++) {
             this.cartas[i].draw(this.graphics, i);
         }
-        if (this.__checkEnd()) {
-            this.mensaje = "Enhorabuena, has ganado!";
+        if (this.haAcabado()) {
+            this.mensaje = "¡Has ganado!";
             this.graphics.drawMessage(this.mensaje);
             clearInterval(this.timer);
         }
@@ -79,7 +81,9 @@ MemoryGame = function(gs){
 
          this.loop = function() {
             var that = this;
-            this.timer = setInterval(function() { that.draw(); }, 16);
+            this.timer = setInterval(function() {
+                 that.draw(); 
+                }, 16);
         };
 
       /**
@@ -102,13 +106,13 @@ MemoryGame = function(gs){
                          this.espera = true;
      
                          if (this.cartas[idCard].compareTo(this.cartas[this.primeraCarta])) { //Comprueba si ambas cartas son pareja
-                             this.mensaje = "Correcto!";
+                             this.mensaje = "¡Pareja encontrada!";
                              this.cartas[this.primeraCarta].found();
                              this.cartas[idCard].found();
                              this.parejaCartasAcertadas++;
                              this.espera = false;
                          } else { // Las dos cartas no son la misma pareja
-                             this.mensaje = "Error!  Inténtalo otra vez";
+                             this.mensaje = "Intentalo de nuevo";
                              var dat = this;
      
                              var primeraCartaAux = dat.primeraCarta;
@@ -130,7 +134,7 @@ MemoryGame = function(gs){
      * Compruebo si el juego ha acabado
      */
 
-     this.__checkEnd = function() {
+     this.haAcabado = function() {
         return this.parejaCartasAcertadas * 2 === this.cartas.length;
     }
 
@@ -200,13 +204,13 @@ MemoryGame = function(gs){
           el array de cartas del juego (necesario para dibujar una carta).
         */
 
-          this.draw = function(gs, pos) {
-            if (this.estado === EnumEstadoCartas.bocaAbajo) {
-                gs.draw("back", pos);
-            } else {
-                gs.draw(this.sprite, pos);
-            }
-        };
+    this.draw = function(gs, pos) {
+        if (this.estado === EnumEstadoCartas.bocaAbajo) {
+            gs.draw("back", pos);
+        } else {
+            gs.draw(this.sprite, pos);
+        }
+    };
 };
 
 
