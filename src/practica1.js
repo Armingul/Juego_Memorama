@@ -32,7 +32,7 @@ MemoryGame = function(gs){
      */
 
         this.initGame = function() { 
-            //Obtenemos las claves de los sprites
+            //Obtengo los nombres de las cartas(sprites)
             var nombresSprites = Object.keys(this.graphics.maps);
     
             var j = 0;
@@ -42,7 +42,6 @@ MemoryGame = function(gs){
                 this.cartas.push(carta);
                 if(!duplico){
                     j++;
-                    //Nos saltamos el sprite "back"
                     if(nombresSprites[j]=="back")j++;
                     duplico = true;
                 } else {             
@@ -65,6 +64,7 @@ MemoryGame = function(gs){
         for (var i = 0; i < 16; i++) {
             this.cartas[i].draw(this.graphics, i);
         }
+        //Compruebo si el juego ha
         if (this.haAcabado()) {
             this.mensaje = "¡Has ganado!";
             this.graphics.drawMessage(this.mensaje);
@@ -98,20 +98,22 @@ MemoryGame = function(gs){
          this.onClick = function(idCard) {
              if (!this.espera) {
                  if (this.cartas[idCard] !== undefined && this.cartas[idCard].estado === EnumEstadoCartas.bocaAbajo) {
-                     this.cartas[idCard].flip(); // La ponemos boca arriba siempre
-     
-                     if (this.primeraCarta === -1) { // Es la primera carta en pulsar  
+                     //Pongo las cartas boca
+                     this.cartas[idCard].flip(); 
+                    //Primera carta pulsada
+                     if (this.primeraCarta === -1) {   
                          this.primeraCarta = idCard;
-                     } else { // Es la segunda carta en pinchar y la anterior clickada se guarda en primeraCarta
+                     } else {
                          this.espera = true;
-     
-                         if (this.cartas[idCard].compareTo(this.cartas[this.primeraCarta])) { //Comprueba si ambas cartas son pareja
+                         //Compruebo si las cartas son iguales
+                         if (this.cartas[idCard].compareTo(this.cartas[this.primeraCarta])) { 
                              this.mensaje = "¡Pareja encontrada!";
                              this.cartas[this.primeraCarta].found();
                              this.cartas[idCard].found();
                              this.parejaCartasAcertadas++;
                              this.espera = false;
-                         } else { // Las dos cartas no son la misma pareja
+                         } else { 
+                             // Las cartas no son iguales
                              this.mensaje = "Intentalo de nuevo";
                              var dat = this;
      
@@ -166,8 +168,9 @@ MemoryGame = function(gs){
 
      MemoryGameCard = function(id) {
         //Atributos
-        this.sprite = id;
         this.estado = EnumEstadoCartas.bocaAbajo;
+        this.sprite = id;
+      
     
     /**
      * flip(): Da la vuelta a la carta, cambiando el estado de la misma.
